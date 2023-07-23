@@ -1,24 +1,45 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import BlogPost from './BlogPost'
+import UserInput from './UserInput'
+import UndoPost from './UndoPost'
 
 
 const Blog = () => {
-    
-   
+
+    let [author, setAuthor] = useState('')
+    let [title, setTitle] = useState('')
+    let [content, setContent] = useState('')
     let [listOfPosts, setListOfPosts] = useState([])
 
-    
-    function addToList(newPost){
-        setListOfPosts(previousPosts =>{
+    function postKey() {
+        let key = new Date();
+        return key.getTime();
+    }
+
+    function postDate() {
+        let date = new Date();
+        let options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleString(undefined, options);
+    }
+
+    function addToList(newPost) {
+        setListOfPosts(previousPosts => {
             return [newPost, ...previousPosts]
         })
     }
 
-  return (
-    <>
+    function removeFromList() {
+        setListOfPosts(previousPosts => {
+            let updatedPosts = previousPosts.slice(1, previousPosts.length);
+            return updatedPosts;
+        })
+    };
+
+    return (
+        <>
 
 
-    {
+            {
     /* 
     #################################################################################################################################################################################### HOMEWORK ####################################################################################################################################################################
     
@@ -32,22 +53,25 @@ const Blog = () => {
     Optional TODO: Add dates to the posts
     */}
 
-    <BlogPost addToList={addToList}/>
+            <UserInput setAuthor={[author, setAuthor]} setTitle={[title, setTitle]} setContent={[content, setContent]} />
+            <BlogPost addToList={addToList} setAuthor={[author, setAuthor]} setTitle={[title, setTitle]} setContent={[content, setContent]} postDate={postDate} postKey={postKey} />
+            <UndoPost removeFromList={removeFromList} setAuthor={[author, setAuthor]} setTitle={[title, setTitle]} setContent={[content, setContent]} />
 
 
-    {listOfPosts.map(post =>{
-        return(
-            <>
-            
-            <h2>{post.title}</h2>
-            <h3>{post.author}</h3>
-            <p>{post.content}</p>
-            <hr />
-            </>
-        )
-    })}
-    </>
-  )
+            {listOfPosts.map(post => {
+                return (
+                    <>
+
+                        <h2>{post.title}</h2>
+                        <h3>{post.author}</h3>
+                        <h4>{post.date}</h4>
+                        <p>{post.content}</p>
+                        <hr />
+                    </>
+                )
+            })}
+        </>
+    )
 }
 
 export default Blog
