@@ -60,14 +60,13 @@ const Blog = () => {
 
             {listOfPosts.map(post => {
                 return (
-                    <>
-
-                        <h2>{post.title}</h2>
-                        <h3>{post.author}</h3>
-                        <h4>{post.date}</h4>
-                        <p>{post.content}</p>
+                    <div key={post.key}>
+                        <h2>Title: {post.title}</h2>
+                        <h3>Author: {post.author}</h3>
+                        <h4>Date: {post.date}</h4>
+                        <p>Content: {post.content}</p>
                         <hr />
-                    </>
+                    </div>
                 )
             })}
         </>
